@@ -3,6 +3,8 @@ const multer = require("multer"); // Multer (un middleware pour Express.js)
 const path = require("path"); // Path (un module natif de Node.js)
 const fs = require("fs"); // File System (un module natif de Node.js)
 
+const { getVideos, uploadVideo } = require("../queries/videos.queries");
+
 //form "upload video"
 exports.videoNew = (req, res, next) => {
   res.render("videos/video-form"); // video-form.pug
@@ -12,7 +14,7 @@ exports.videoNew = (req, res, next) => {
 exports.videoList = async (req, res, next) => {
   try {
     // OK 200
-    const videos = await Video.find({}).exec();
+    const videos = await getVideos();
 
     if (videos.length === 0) {
       return res.status(404).render("videos/error", {
@@ -48,8 +50,8 @@ exports.videoUpload = async (req, res, next) => {
 
   try {
     // OK 200
-    const newVideo = new Video(body);
-    await newVideo.save();
+    await uploadVideo(body);
+
     // res.status(200).json({ message: "Vidéo téléchargée avec succès." });
     res.redirect("/");
   } catch (err) {
