@@ -1,0 +1,17 @@
+
+extends ../layout.pug 
+
+block content 
+    .container
+        .row.mt-3
+            if videos
+                each video in videos 
+                    .col-md-4
+                        .card.mb-4
+                            .card-body
+                                h4.card-title.text-center= video.titre
+                                p.card-text= "Category: " + video.category
+                                p.card-text= "Description: " + video.description
+                                p.card-text= "Chemin: " + video.chemin
+                                a.btn.btn-success.btn-video(href="/videos/stream/" + video.filename) Watch Video
+

@@ -1,0 +1,23 @@
+img {
+  margin-left: 10px;
+}
+
+.content {
+  max-width: 1000px;
+  margin-top: 20px;
+}
+
+.profile-container {
+  width: 30%;
+  max-width: 300px;
+}
+
+.btn-video {
+  border-radius: 30px;
+}
+
+.inputs-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
