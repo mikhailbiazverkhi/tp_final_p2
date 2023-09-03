@@ -2,6 +2,7 @@
 const express = require("express"); // Express (un framework web pour Node.js)
 const morgan = require("morgan"); // Morgan (un middleware de logging pour Express)
 const path = require("path"); // Path (un module natif de Node.js)
+const errorHandler = require("errorhandler"); // Importation du middleware 'errorhandler' pour la gestion des erreurs en mode développement
 
 // Création de l'application Express
 const app = express();
@@ -35,6 +36,20 @@ app.use(express.urlencoded({ extended: true }));
 
 // Utilise les routes définies dans le dossier './routes'
 app.use(index);
+
+// Gestion des erreurs basée sur l'environnement de l'application
+if (process.env.NODE_ENV === "development") {
+  app.use(errorHandler()); // En mode développement, utilise un gestionnaire d'erreurs complet
+} else {
+  // En production, fournit une réponse d'erreur plus générique
+  app.use((err, req, res, next) => {
+    const code = err.code || 500;
+    res.status(code).json({
+      code: code,
+      message: code === 500 ? null : err.message,
+    });
+  });
+}
 
 // Démarre le serveur en écoutant les requêtes sur le port spécifié
 app.listen(port, () => {
