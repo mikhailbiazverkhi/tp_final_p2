@@ -1,4 +1,3 @@
-const Video = require("../database/models/video.model");
 const multer = require("multer"); // Multer (un middleware pour Express.js)
 const path = require("path"); // Path (un module natif de Node.js)
 const fs = require("fs"); // File System (un module natif de Node.js)
