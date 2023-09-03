@@ -3,7 +3,12 @@ const multer = require("multer"); // Multer (un middleware pour Express.js)
 const path = require("path"); // Path (un module natif de Node.js)
 const fs = require("fs"); // File System (un module natif de Node.js)
 
-const { getVideos, uploadVideo } = require("../queries/videos.queries");
+const {
+  getVideos,
+  uploadVideo,
+  deleteVideo,
+  getVideoById,
+} = require("../queries/videos.queries");
 
 //form "upload video"
 exports.videoNew = (req, res, next) => {
@@ -22,7 +27,9 @@ exports.videoList = async (req, res, next) => {
       });
     }
 
-    res.render("videos/video-list", { videos });
+    // res.render("videos/video-list", { videos });
+
+    res.render("videos/video", { videos });
   } catch (err) {
     res.status(500).render("videos/error", {
       message: "Erreur serveur ou problème avec la base de données",
@@ -53,6 +60,7 @@ exports.videoUpload = async (req, res, next) => {
     await uploadVideo(body);
 
     // res.status(200).json({ message: "Vidéo téléchargée avec succès." });
+
     res.redirect("/");
   } catch (err) {
     if (err) {
@@ -112,4 +120,24 @@ exports.videoStreaming = (req, res, next) => {
       });
     });
   });
+};
+
+exports.videoDelete = async (req, res, next) => {
+  try {
+    const videoId = req.params.videoId;
+
+    //delete from disk
+    const obj = await getVideoById(videoId);
+    const videoPath = path.join(__dirname, "../uploads", obj.filename);
+    fs.unlinkSync(videoPath);
+
+    //delete from MongoDB
+    await deleteVideo(videoId);
+
+    //Récupérer la liste mise à jour des vidéos
+    const videos = await getVideos();
+    res.render("videos/video-list", { videos });
+  } catch (e) {
+    next(e);
+  }
 };

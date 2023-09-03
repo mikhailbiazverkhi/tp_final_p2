@@ -8,6 +8,7 @@ const {
   videoUpload,
   videoStreaming,
   upload,
+  videoDelete,
 } = require("../controllers/videos.controller");
 
 //form "upload video"
@@ -21,5 +22,8 @@ router.post("/uploadvideo", upload.single("chemin"), videoUpload);
 
 //Streaming video
 router.get("/stream/:filename", videoStreaming);
+
+//Supprimer la vidéo
+router.delete("/:videoId", videoDelete);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 
-extends ../layout.pug 
+//- extends ../layout.pug 
 
 block content 
     .container
@@ -14,4 +14,4 @@ block content
                                 p.card-text= "Description: " + video.description
                                 p.card-text= "Chemin: " + video.chemin
                                 a.btn.btn-success.btn-video(href="/videos/stream/" + video.filename) Watch Video
-
+                                button(class="btn btn-danger mt-2 float-end" videoid=video._id) x                             

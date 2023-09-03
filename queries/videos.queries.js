@@ -11,3 +11,11 @@ exports.uploadVideo = (video) => {
   const newVideo = new Video(video);
   return newVideo.save();
 };
+
+exports.deleteVideo = (videoId) => {
+  return Video.findByIdAndDelete(videoId).exec();
+};
+
+exports.getVideoById = (videoId) => {
+  return Video.findById(videoId).exec();
+};
